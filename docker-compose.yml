@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+    web:
+        image: fulldigits/apache
+        volumes:
+            - ./:/var/www/html
+            - ./etc/apache2/000-default.conf:/usr/local/apache2/conf.d/000-default.conf.example
+            - ./etc/apache2/default-ssl.conf:/usr/local/apache2/conf.d/default-ssl.conf.example
+        command: >
+            /bin/sh -c "export hosts=\"$$(echo $$HOST | sed 's/,/ /g')\"
+            && envsubst '$$hosts' < /usr/local/apache2/conf.d/000-default.conf.example > /usr/local/apache2/conf.d/000-default.conf
+            && { test -e /usr/local/etc/ssl/private.crt && { envsubst '$$hosts' < /usr/local/apache2/conf.d/default-ssl.conf.example > /usr/local/apache2/conf.d/default-ssl.conf; continue; }; continue; }
+            && httpd-foreground"
+        environment:
+            HOST: ${HOST}
+        depends_on:
+            - php
+            - mysqldb
+
+    php:
+        image: fulldigits/php:7.2
+        volumes:
+        - ./:/var/www/html
+        - ./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+        - ./etc/php/fpm.conf:/usr/local/etc/php-fpm.d/zz-fpm.conf
+        command: >
+            /bin/sh -c "envsubst '$$DB_HOST,$$DB_NAME,$$DB_USER,$$DB_PASSWORD,$$DB_PREFIX,$$AUTH_KEY,$$SECURE_AUTH_KEY,$$LOGGED_IN_KEY,$$NONCE_KEY,$$AUTH_SALT,$$SECURE_AUTH_SALT,$$LOGGED_IN_SALT,$$NONCE_SALT,$$WP_DEBUG' < wp-config-sample.php > wp-config.php
+            && php-fpm"
+        environment:
+            DB_HOST: ${DB_HOST}
+            DB_NAME: ${DB_NAME}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_PREFIX: ${DB_PREFIX}
+            AUTH_KEY: ${AUTH_KEY}
+            SECURE_AUTH_KEY: ${SECURE_AUTH_KEY}
+            LOGGED_IN_KEY: ${LOGGED_IN_KEY}
+            NONCE_KEY: ${NONCE_KEY}
+            AUTH_SALT: ${AUTH_SALT}
+            SECURE_AUTH_SALT: ${SECURE_AUTH_SALT}
+            LOGGED_IN_SALT: ${LOGGED_IN_SALT}
+            NONCE_SALT: ${NONCE_SALT}
+
+    mysqldb:
+        image: mysql:5
+        volumes:
+            - ./etc/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./data/db/mysql:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
