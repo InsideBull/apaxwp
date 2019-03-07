@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
  * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
 ?>
 
 <div class="ai1wm-container">
@@ -61,7 +65,7 @@
 											<?php echo esc_html( basename( $backup['filename'] ) ); ?>
 										</td>
 										<td class="ai1wm-column-date">
-											<?php echo human_time_diff( $backup['mtime'] ); ?> <?php _e( 'ago', AI1WM_PLUGIN_NAME ); ?>
+											<?php echo esc_html( sprintf( __( '%s ago', AI1WM_PLUGIN_NAME ), human_time_diff( $backup['mtime'] ) ) ); ?>
 										</td>
 										<td class="ai1wm-column-size">
 											<?php if ( is_null( $backup['size'] ) ) : ?>
@@ -71,7 +75,7 @@
 											<?php endif; ?>
 										</td>
 										<td class="ai1wm-column-actions ai1wm-backup-actions">
-											<a href="<?php echo ai1wm_backup_url( array( 'archive' => esc_attr( $backup['filename'] ) ) ); ?>" class="ai1wm-button-green ai1wm-backup-download">
+											<a href="<?php echo ai1wm_backup_url( array( 'archive' => esc_attr( $backup['filename'] ) ) ); ?>" class="ai1wm-button-green ai1wm-backup-download" download="<?php echo esc_attr( $backup['filename'] ); ?>">
 												<i class="ai1wm-icon-arrow-down"></i>
 												<span><?php _e( 'Download', AI1WM_PLUGIN_NAME ); ?></span>
 											</a>

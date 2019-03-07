@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
  * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
 ?>
 
 <div class="ai1wm-feedback">
@@ -35,10 +39,10 @@
 		</li>
 		<li>
 			<input type="radio" class="ai1wm-flat-radio-button ai1wm-feedback-type" id="ai1wm-feedback-type-2" name="ai1wm_feedback_type" value="suggestions" />
-			<label for="ai1wm-feedback-type-2">
+			<a id="ai1wm-feedback-type-link-2" href="https://feedback.wp-migration.com" target="_blank">
 				<i></i>
 				<span><?php _e( 'I have ideas to improve this plugin', AI1WM_PLUGIN_NAME ); ?></span>
-			</label>
+			</a>
 		</li>
 		<li>
 			<input type="radio" class="ai1wm-flat-radio-button ai1wm-feedback-type" id="ai1wm-feedback-type-3" name="ai1wm_feedback_type" value="help-needed" />

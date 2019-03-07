@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
  * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
 
 class Ai1wm_Export_Config_File {
 
@@ -63,7 +67,7 @@ class Ai1wm_Export_Config_File {
 		$archive->set_file_pointer( $archive_bytes_offset );
 
 		// Add package.json to archive
-		if ( $archive->add_file( ai1wm_package_path( $params ), AI1WM_PACKAGE_NAME, $package_bytes_written, $package_bytes_offset, 10 ) ) {
+		if ( $archive->add_file( ai1wm_package_path( $params ), AI1WM_PACKAGE_NAME, $package_bytes_written, $package_bytes_offset ) ) {
 
 			// Set progress
 			Ai1wm_Status::info( __( 'Done archiving configuration file.', AI1WM_PLUGIN_NAME ) );

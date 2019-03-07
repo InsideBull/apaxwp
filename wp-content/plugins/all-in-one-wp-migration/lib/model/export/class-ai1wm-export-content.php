@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
  * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
 
 class Ai1wm_Export_Content {
 
@@ -98,7 +102,7 @@ class Ai1wm_Export_Content {
 				$file_bytes_written = 0;
 
 				// Add file to archive
-				if ( ( $completed = $archive->add_file( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . $path, $path, $file_bytes_written, $file_bytes_offset, 10 ) ) ) {
+				if ( ( $completed = $archive->add_file( WP_CONTENT_DIR . DIRECTORY_SEPARATOR . $path, $path, $file_bytes_written, $file_bytes_offset ) ) ) {
 					$file_bytes_offset = 0;
 
 					// Get filemap bytes offset
@@ -115,9 +119,11 @@ class Ai1wm_Export_Content {
 				Ai1wm_Status::info( sprintf( __( 'Archiving %d files...<br />%d%% complete', AI1WM_PLUGIN_NAME ), $total_files_count, $progress ) );
 
 				// More than 10 seconds have passed, break and do another request
-				if ( ( microtime( true ) - $start ) > 10 ) {
-					$completed = false;
-					break;
+				if ( ( $timeout = apply_filters( 'ai1wm_completed_timeout', 10 ) ) ) {
+					if ( ( microtime( true ) - $start ) > $timeout ) {
+						$completed = false;
+						break;
+					}
 				}
 			}
 

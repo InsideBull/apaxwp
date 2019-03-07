@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
  * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
 
 class Ai1wm_Export_Database_File {
 
@@ -68,7 +72,7 @@ class Ai1wm_Export_Database_File {
 		$archive->set_file_pointer( $archive_bytes_offset );
 
 		// Add database.sql to archive
-		if ( $archive->add_file( ai1wm_database_path( $params ), AI1WM_DATABASE_NAME, $database_bytes_written, $database_bytes_offset, 10 ) ) {
+		if ( $archive->add_file( ai1wm_database_path( $params ), AI1WM_DATABASE_NAME, $database_bytes_written, $database_bytes_offset ) ) {
 
 			// Set progress
 			Ai1wm_Status::info( __( 'Done archiving database.', AI1WM_PLUGIN_NAME ) );

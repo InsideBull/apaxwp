@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,10 @@
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Kangaroos cannot jump here' );
+}
+
 class Ai1wm_Compressor extends Ai1wm_Archiver {
 
 	/**
@@ -42,7 +46,6 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 	 * @param string $new_file_name Write the file with a different name
 	 * @param int    $file_written  File written (in bytes)
 	 * @param int    $file_offset   File offset (in bytes)
-	 * @param int    $timeout       Process timeout (in seconds)
 	 *
 	 * @throws \Ai1wm_Not_Seekable_Exception
 	 * @throws \Ai1wm_Not_Writable_Exception
@@ -50,7 +53,7 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 	 *
 	 * @return bool
 	 */
-	public function add_file( $file_name, $new_file_name = '', &$file_written = 0, &$file_offset = 0, $timeout = 0 ) {
+	public function add_file( $file_name, $new_file_name = '', &$file_written = 0, &$file_offset = 0 ) {
 		$file_written = 0;
 
 		// Replace forward slash with current directory separator in file name
@@ -104,7 +107,7 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 						}
 
 						// Time elapsed
-						if ( $timeout ) {
+						if ( ( $timeout = apply_filters( 'ai1wm_completed_timeout', 10 ) ) ) {
 							if ( ( microtime( true ) - $start ) > $timeout ) {
 								$completed = false;
 								break;
